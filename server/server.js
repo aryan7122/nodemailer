@@ -19,18 +19,16 @@ app.use(express.json());
 app.use(bodyParser.json());
 
 app.post('/send-email', async (req, res) => {
-    const { name, email, subject, message } = req.body;
+    const {from,to, name, email, subject, message } = req.body;
 
-    // Save form data to MongoDB
-    // const newSubmission = new Submission({ name, email, subject, message });
+    
     try {
-        // await newSubmission.save();
         console.log('Form data saved to MongoDB');
     } catch (error) {
         console.error('Error saving to MongoDB:', error);
     }
 
-    var transporter = nodemailer.createTransport({
+    var transporter = nodemailer.createTransport({ //https://mailtrap.io/inboxes
         host: "sandbox.smtp.mailtrap.io",
         port: 2525,
         auth: {
@@ -38,18 +36,12 @@ app.post('/send-email', async (req, res) => {
             pass: "3f776140999e05"
         }
     });
-    
-    // var transporter = nodemailer.createTransport({
-    //     host: "gmail",
-    //     auth: {
-    //         user: "email",
-    //         pass: "password"
-    //     }
-    // });
+
+
 
     const mailOptions = {
-        from: 'aryankushwaha2121@gmail.com',
-        to: 'aryanwebdevcontact@gmail.com',
+        from:from,// 'aryankushwaha2121@gmail.com',
+        to:to, //'aryanwebdevcontact@gmail.com',
         subject: 'New Form Submission',
         text: `Name: ${name}\nEmail: ${email}\nSubject: ${subject}\nMessage: ${message}`,
     };
